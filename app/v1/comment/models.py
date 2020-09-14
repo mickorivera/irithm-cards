@@ -1,4 +1,4 @@
-from playhouse.postgres_ext import AutoField, CharField, ForeignKeyField
+from playhouse.postgres_ext import AutoField, CharField, ForeignKeyField, DateTimeField
 
 from app.common.models import BaseSQLModel
 from app.v1.card.models import CardModel
@@ -11,9 +11,10 @@ class CommentModel(BaseSQLModel):
     card = ForeignKeyField(CardModel, backref="comments")
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
+    date_updated = DateTimeField()
 
     class Meta(BaseSQLModel):
-        table_name = "comment"
+        table_name = "comments"
 
 
 class CommentReplyModel(BaseSQLModel):
@@ -21,6 +22,7 @@ class CommentReplyModel(BaseSQLModel):
     author = ForeignKeyField(UserModel, backref="replies")
     comment = ForeignKeyField(CommentModel, backref="replies")
     content = CharField(max_length=256)
+    date_updated = DateTimeField()
 
     class Meta(BaseSQLModel):
-        table_name = "comment_reply"
+        table_name = "comment_replies"

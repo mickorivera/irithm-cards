@@ -1,4 +1,4 @@
-from playhouse.postgres_ext import AutoField, CharField, ForeignKeyField
+from playhouse.postgres_ext import AutoField, CharField, ForeignKeyField, DateTimeField
 
 from app.common.models import BaseSQLModel
 from app.v1.list.models import ListModel
@@ -11,6 +11,7 @@ class CardModel(BaseSQLModel):
     list = ForeignKeyField(ListModel, backref="cards")
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
+    date_updated = DateTimeField()
 
     class Meta(BaseSQLModel):
-        table_name = "card"
+        table_name = "cards"

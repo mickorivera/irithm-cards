@@ -13,15 +13,16 @@ class UserModel(peewee.Model):
     email_address = CharField(max_length=256, unique=True)
     password = CharField(max_length=1024)
     class Meta:
-        table_name = "user"
+        table_name = "users"
 
 
 @snapshot.append
 class ListModel(peewee.Model):
     author = snapshot.ForeignKeyField(backref='lists', index=True, model='usermodel')
     title = CharField(max_length=256)
+    date_updated = DateTimeField()
     class Meta:
-        table_name = "list"
+        table_name = "lists"
 
 
 @snapshot.append
@@ -30,8 +31,9 @@ class CardModel(peewee.Model):
     list = snapshot.ForeignKeyField(backref='cards', index=True, model='listmodel')
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
+    date_updated = DateTimeField()
     class Meta:
-        table_name = "card"
+        table_name = "cards"
 
 
 @snapshot.append
@@ -40,8 +42,9 @@ class CommentModel(peewee.Model):
     card = snapshot.ForeignKeyField(backref='comments', index=True, model='cardmodel')
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
+    date_updated = DateTimeField()
     class Meta:
-        table_name = "comment"
+        table_name = "comments"
 
 
 @snapshot.append
@@ -49,7 +52,8 @@ class CommentReplyModel(peewee.Model):
     author = snapshot.ForeignKeyField(backref='replies', index=True, model='usermodel')
     comment = snapshot.ForeignKeyField(backref='replies', index=True, model='commentmodel')
     content = CharField(max_length=256)
+    date_updated = DateTimeField()
     class Meta:
-        table_name = "comment_reply"
+        table_name = "comment_replies"
 
 
