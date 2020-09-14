@@ -24,8 +24,8 @@ class RestApp(Flask):
         self.rebar.add_handler_registry(version_1_registry)
         self.rebar.init_app(app=self)
 
-        # self._init_logger()
-        # self._init_db_client()
+        self._init_logger()
+        self._init_db_client()
 
     def _init_logger(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -36,24 +36,24 @@ class RestApp(Flask):
             logging.DEBUG if self.config["DEBUG"] else logging.INFO
         )
 
-    # def _init_db_client(self):
-    #     supported_models = ()
-    #
-    #     sql_db_name = self.config["POSTGRESQL_DB_NAME"]
-    #     sql_host = self.config["POSTGRESQL_DB_HOST"]
-    #     sql_username = self.config["POSTGRESQL_DB_USERNAME"]
-    #     self.custom_logger.info(
-    #         f"Binding models to PSQL DB {sql_db_name} from "
-    #         f"{sql_username}@{sql_host}..."
-    #     )
-    #     self.postgre_client = PostgresqlDatabase(
-    #         sql_db_name,
-    #         host=sql_host,
-    #         port=self.config["POSTGRESQL_DB_PORT"],
-    #         user=sql_username,
-    #         password=self.config["POSTGRESQL_DB_PASSWORD"],
-    #     )
-    #
-    #     self.postgre_client.bind(
-    #         supported_models, bind_refs=False, bind_backrefs=False
-    #     )
+    def _init_db_client(self):
+        supported_models = ()
+
+        sql_db_name = self.config["POSTGRESQL_DB_NAME"]
+        sql_host = self.config["POSTGRESQL_DB_HOST"]
+        sql_username = self.config["POSTGRESQL_DB_USERNAME"]
+        self.custom_logger.info(
+            f"Binding models to PSQL DB {sql_db_name} from "
+            f"{sql_username}@{sql_host}..."
+        )
+        self.postgre_client = PostgresqlDatabase(
+            sql_db_name,
+            host=sql_host,
+            port=self.config["POSTGRESQL_DB_PORT"],
+            user=sql_username,
+            password=self.config["POSTGRESQL_DB_PASSWORD"],
+        )
+
+        self.postgre_client.bind(
+            supported_models, bind_refs=False, bind_backrefs=False
+        )
