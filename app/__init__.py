@@ -3,6 +3,7 @@ import logging.config
 import os
 from flask import Flask
 from flask_cors import CORS
+from flask_login import LoginManager
 from flask_rebar import Rebar
 from playhouse.postgres_ext import PostgresqlDatabase
 
@@ -23,6 +24,8 @@ class RestApp(Flask):
         self.rebar = Rebar()
         self.rebar.add_handler_registry(version_1_registry)
         self.rebar.init_app(app=self)
+        self.login_manager = LoginManager()
+        self.login_manager.init_app(app=self)
 
         self._init_logger()
         self._init_db_client()

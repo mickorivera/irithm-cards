@@ -1,4 +1,5 @@
 import inspect
+from datetime import datetime
 
 from playhouse.postgres_ext import Model, PostgresqlDatabase
 
@@ -35,6 +36,11 @@ class BaseSQLModel(Model):
         database = postgre_client
 
     @classmethod
+    def _get_utc_timestamp(cls):
+        """Returns current time in UTC"""
+        return datetime.utcnow()
+
+    @classmethod
     def _raise_attr_error(cls):
         """Generic error to avoid usage of unimplemented db functions"""
         raise AttributeError(
@@ -47,10 +53,15 @@ class BaseSQLModel(Model):
     @ensure_connection
     def create(cls, **query):
         """Creates record of model class"""
+        if "date_created" not in query:
+            query["date_created"] = cls._get_utc_timestamp()
+            query["date_updated"] = cls._get_utc_timestamp()
         return super().create(**query)
 
     @ensure_connection
     def insert(self, **insert):
+        if "date_updated" not in insert:
+            insert["date_updated"] = self._get_utc_timestamp()
         return super(BaseSQLModel, self).insert(**insert)
 
     @ensure_connection

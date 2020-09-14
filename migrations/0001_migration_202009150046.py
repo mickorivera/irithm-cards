@@ -9,9 +9,10 @@ snapshot = Snapshot()
 
 @snapshot.append
 class UserModel(peewee.Model):
-    username = CharField(index=True, max_length=16, primary_key=True)
+    username = CharField(index=True, max_length=16, unique=True)
     email_address = CharField(max_length=256, unique=True)
     password = CharField(max_length=1024)
+    date_updated = DateTimeField(null=True)
     class Meta:
         table_name = "users"
 
@@ -20,7 +21,8 @@ class UserModel(peewee.Model):
 class ListModel(peewee.Model):
     author = snapshot.ForeignKeyField(backref='lists', index=True, model='usermodel')
     title = CharField(max_length=256)
-    date_updated = DateTimeField()
+    date_created = DateTimeField(null=True)
+    date_updated = DateTimeField(null=True)
     class Meta:
         table_name = "lists"
 
@@ -31,7 +33,8 @@ class CardModel(peewee.Model):
     list = snapshot.ForeignKeyField(backref='cards', index=True, model='listmodel')
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
-    date_updated = DateTimeField()
+    date_created = DateTimeField(null=True)
+    date_updated = DateTimeField(null=True)
     class Meta:
         table_name = "cards"
 
@@ -42,7 +45,8 @@ class CommentModel(peewee.Model):
     card = snapshot.ForeignKeyField(backref='comments', index=True, model='cardmodel')
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
-    date_updated = DateTimeField()
+    date_created = DateTimeField(null=True)
+    date_updated = DateTimeField(null=True)
     class Meta:
         table_name = "comments"
 
@@ -52,7 +56,8 @@ class CommentReplyModel(peewee.Model):
     author = snapshot.ForeignKeyField(backref='replies', index=True, model='usermodel')
     comment = snapshot.ForeignKeyField(backref='replies', index=True, model='commentmodel')
     content = CharField(max_length=256)
-    date_updated = DateTimeField()
+    date_created = DateTimeField(null=True)
+    date_updated = DateTimeField(null=True)
     class Meta:
         table_name = "comment_replies"
 

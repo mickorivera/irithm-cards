@@ -6,12 +6,13 @@ from app.v1.user.models import UserModel
 
 
 class CardModel(BaseSQLModel):
-    id = AutoField(primary_key=True, index=True)
+    id = AutoField()
     author = ForeignKeyField(UserModel, backref="cards")
     list = ForeignKeyField(ListModel, backref="cards")
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
-    date_updated = DateTimeField()
+    date_created = DateTimeField(null=True)
+    date_updated = DateTimeField(null=True)
 
     class Meta(BaseSQLModel):
         table_name = "cards"
