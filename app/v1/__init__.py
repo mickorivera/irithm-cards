@@ -1,4 +1,4 @@
-from flask_rebar import SwaggerV3Generator
+from flask_rebar import HeaderApiKeyAuthenticator, SwaggerV3Generator
 from flask_rebar.rebar import HandlerRegistry
 
 from app.v1.card.resources import get_card_list
@@ -29,6 +29,9 @@ version_1_registry = HandlerRegistry(
     swagger_path="/swagger" if config.DEBUG else None,
     swagger_ui_path="/swagger/ui" if config.DEBUG else None,
 )
+# TODO: enable auth
+# authenticator = HeaderApiKeyAuthenticator(header='X-MyApp-ApiKey')
+# authenticator.register_key(key='my-secret-api-key')
 
 # Cards Endpoints
 version_1_registry.add_handler(
