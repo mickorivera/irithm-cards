@@ -1,12 +1,12 @@
 def get_all_comments():
     return {
-        "author": 1,
+        "author": "micko",
         "content": "Comment content"
     }
 
 
 def get_comment_replies():
     return {
-        "author": 1,
+        "author": "micko",
         "content": "Comment reply content"
     }

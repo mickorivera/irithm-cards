@@ -8,4 +8,4 @@ class CommentSchema(Schema):
 
 class CommentReplySchema(Schema):
     content = fields.String()
-    author = fields.Integer()
+    author = fields.String()

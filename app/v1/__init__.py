@@ -1,17 +1,17 @@
 from flask_rebar import SwaggerV3Generator
 from flask_rebar.rebar import HandlerRegistry
 
-from app.v1.modules.card.resources import get_card_list
-from app.v1.modules.card.schemas import CardSchema
-from app.v1.modules.comment.resources import (
+from app.v1.card.resources import get_card_list
+from app.v1.card.schemas import CardSchema
+from app.v1.comment.resources import (
     get_all_comments,
     get_comment_replies,
 )
-from app.v1.modules.comment.schemas import CommentReplySchema, CommentSchema
-from app.v1.modules.list.resources import get_lists
-from app.v1.modules.list.schemas import ListSchema
-from app.v1.modules.user.resources import get_user_list
-from app.v1.modules.user.schemas import UserSchema
+from app.v1.comment.schemas import CommentReplySchema, CommentSchema
+from app.v1.list.resources import get_lists
+from app.v1.list.schemas import ListSchema
+from app.v1.user.resources import get_user_list
+from app.v1.user.schemas import UserSchema
 from config import get_config
 
 
