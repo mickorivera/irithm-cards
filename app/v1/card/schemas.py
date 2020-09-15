@@ -5,3 +5,4 @@ class CardSchema(Schema):
     title = fields.String()
     description = fields.String()
     author = fields.String()
+    

@@ -35,7 +35,6 @@ pem migrate
 
 ### Unit Tests
 
-
 ### Run Application
 ```bash
 python manage.py

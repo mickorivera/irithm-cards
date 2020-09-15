@@ -13,3 +13,4 @@ class UserSchema(Schema):
     user_role = fields.String(
         default=UserRole.MEMBER, validate=validate.OneOf(UserRole)
     )
+    
