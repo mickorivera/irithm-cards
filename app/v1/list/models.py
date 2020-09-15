@@ -11,7 +11,8 @@ from app.v1.user.models import UserModel
 
 class ListModel(BaseSQLModel):
     id = AutoField()
-    author = ForeignKeyField(UserModel, backref="lists")
+    # TODO: Restrict author must be role ADMIN
+    author = ForeignKeyField(UserModel, backref="lists", on_delete="CASCADE")
     title = CharField(max_length=256)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)

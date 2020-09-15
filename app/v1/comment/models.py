@@ -12,10 +12,11 @@ from app.v1.user.models import UserModel
 
 class CommentModel(BaseSQLModel):
     id = AutoField()
-    author = ForeignKeyField(UserModel, backref="comments")
-    card = ForeignKeyField(CardModel, backref="comments")
-    title = CharField(max_length=256)
-    description = CharField(max_length=1024)
+    author = ForeignKeyField(
+        UserModel, backref="comments", on_delete="CASCADE"
+    )
+    card = ForeignKeyField(CardModel, backref="comments", on_delete="CASCADE")
+    content = CharField(max_length=256)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)
 
@@ -25,8 +26,10 @@ class CommentModel(BaseSQLModel):
 
 class CommentReplyModel(BaseSQLModel):
     id = AutoField()
-    author = ForeignKeyField(UserModel, backref="replies")
-    comment = ForeignKeyField(CommentModel, backref="replies")
+    author = ForeignKeyField(UserModel, backref="replies", on_delete="CASCADE")
+    comment = ForeignKeyField(
+        CommentModel, backref="replies", on_delete="CASCADE"
+    )
     content = CharField(max_length=256)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)

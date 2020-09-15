@@ -12,6 +12,7 @@ class UserModel(peewee.Model):
     username = CharField(index=True, max_length=16, unique=True)
     email_address = CharField(max_length=256, unique=True)
     password = CharField(max_length=1024)
+    role = CharField(default="MEMBER", max_length=255)
     date_updated = DateTimeField(null=True)
 
     class Meta:
@@ -21,7 +22,7 @@ class UserModel(peewee.Model):
 @snapshot.append
 class ListModel(peewee.Model):
     author = snapshot.ForeignKeyField(
-        backref="lists", index=True, model="usermodel"
+        backref="lists", index=True, model="usermodel", on_delete="CASCADE"
     )
     title = CharField(max_length=256)
     date_created = DateTimeField(null=True)
@@ -34,10 +35,10 @@ class ListModel(peewee.Model):
 @snapshot.append
 class CardModel(peewee.Model):
     author = snapshot.ForeignKeyField(
-        backref="cards", index=True, model="usermodel"
+        backref="cards", index=True, model="usermodel", on_delete="CASCADE"
     )
     list = snapshot.ForeignKeyField(
-        backref="cards", index=True, model="listmodel"
+        backref="cards", index=True, model="listmodel", on_delete="CASCADE"
     )
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
@@ -51,13 +52,12 @@ class CardModel(peewee.Model):
 @snapshot.append
 class CommentModel(peewee.Model):
     author = snapshot.ForeignKeyField(
-        backref="comments", index=True, model="usermodel"
+        backref="comments", index=True, model="usermodel", on_delete="CASCADE"
     )
     card = snapshot.ForeignKeyField(
-        backref="comments", index=True, model="cardmodel"
+        backref="comments", index=True, model="cardmodel", on_delete="CASCADE"
     )
-    title = CharField(max_length=256)
-    description = CharField(max_length=1024)
+    content = CharField(max_length=256)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)
 
@@ -68,10 +68,13 @@ class CommentModel(peewee.Model):
 @snapshot.append
 class CommentReplyModel(peewee.Model):
     author = snapshot.ForeignKeyField(
-        backref="replies", index=True, model="usermodel"
+        backref="replies", index=True, model="usermodel", on_delete="CASCADE"
     )
     comment = snapshot.ForeignKeyField(
-        backref="replies", index=True, model="commentmodel"
+        backref="replies",
+        index=True,
+        model="commentmodel",
+        on_delete="CASCADE",
     )
     content = CharField(max_length=256)
     date_created = DateTimeField(null=True)

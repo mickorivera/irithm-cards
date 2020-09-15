@@ -12,8 +12,8 @@ from app.v1.user.models import UserModel
 
 class CardModel(BaseSQLModel):
     id = AutoField()
-    author = ForeignKeyField(UserModel, backref="cards")
-    list = ForeignKeyField(ListModel, backref="cards")
+    author = ForeignKeyField(UserModel, backref="cards", on_delete="CASCADE")
+    list = ForeignKeyField(ListModel, backref="cards", on_delete="CASCADE")
     title = CharField(max_length=256)
     description = CharField(max_length=1024)
     date_created = DateTimeField(null=True)
