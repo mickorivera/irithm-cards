@@ -8,9 +8,11 @@ from app.v1.user.models import UserModel
 
 app = RestApp()
 
+
 @app.login_manager.user_loader
 def load_user(user_id):
     return UserModel.get(user_id)
+
 
 @app.before_request
 def log_request_info():

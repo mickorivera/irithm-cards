@@ -12,6 +12,7 @@ class UserModel(peewee.Model):
     username = CharField(index=True, max_length=16, unique=True)
     email_address = CharField(max_length=256, unique=True)
     password = CharField(max_length=1024)
+    role = CharField(default="MEMBER", max_length=255)
     date_updated = DateTimeField(null=True)
 
     class Meta:
@@ -79,3 +80,13 @@ class CommentReplyModel(peewee.Model):
 
     class Meta:
         table_name = "comment_replies"
+
+
+def forward(old_orm, new_orm):
+    usermodel = new_orm["usermodel"]
+    return [
+        # Apply default value 'MEMBER' to the field usermodel.role
+        usermodel.update({usermodel.role: "MEMBER"}).where(
+            usermodel.role.is_null(True)
+        ),
+    ]

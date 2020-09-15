@@ -1,4 +1,9 @@
-from playhouse.postgres_ext import AutoField, CharField, ForeignKeyField, DateTimeField
+from playhouse.postgres_ext import (
+    AutoField,
+    CharField,
+    ForeignKeyField,
+    DateTimeField,
+)
 
 from app.common.models import BaseSQLModel
 from app.v1.list.models import ListModel

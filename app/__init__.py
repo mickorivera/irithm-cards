@@ -17,7 +17,8 @@ class RestApp(Flask):
 
         # TODO: apply proper CORS values
         CORS(self)
-        self.config.from_object(get_config())
+        config = get_config()
+        self.config.from_object(config)
         self.url_map.strict_slashes = False
         self.app_context().push()
 
@@ -26,6 +27,7 @@ class RestApp(Flask):
         self.rebar.init_app(app=self)
         self.login_manager = LoginManager()
         self.login_manager.init_app(app=self)
+        self.secret_key = config.API_SECRET_KEY
 
         self._init_logger()
         self._init_db_client()

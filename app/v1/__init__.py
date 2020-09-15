@@ -10,7 +10,7 @@ from app.v1.comment.resources import (
 from app.v1.comment.schemas import CommentReplySchema, CommentSchema
 from app.v1.list.resources import get_lists
 from app.v1.list.schemas import ListSchema
-from app.v1.user.resources import get_user_list, create_user
+from app.v1.user.resources import create_user, get_user_list, login, logout
 from app.v1.user.schemas import UserSchema
 from config import get_config
 
@@ -77,5 +77,20 @@ version_1_registry.add_handler(
     rule="/sign-up",
     method="POST",
     request_body_schema=UserSchema(),
+    response_body_schema=UserSchema(),
+)
+
+version_1_registry.add_handler(
+    login,
+    rule="/login",
+    method="POST",
+    request_body_schema=UserSchema(),
+    response_body_schema=UserSchema(),
+)
+
+version_1_registry.add_handler(
+    logout,
+    rule="/logout",
+    method="POST",
     response_body_schema=UserSchema(),
 )

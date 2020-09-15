@@ -20,7 +20,7 @@ class LocalConfig:
     POSTGRESQL_DB_USERNAME = "postgres"
     POSTGRESQL_DB_PASSWORD = "password"
 
-    API_SECRET_KEY = "API_SECRET_KEY"
+    API_SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 class TestConfig(LocalConfig):
