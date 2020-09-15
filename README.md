@@ -33,6 +33,11 @@ Run peewee-migrate cli
 pem migrate
 ```
 
+### Initial Data Seed
+```bash
+python seed.py
+```
+
 ### Unit Tests
 
 ### Run Application
