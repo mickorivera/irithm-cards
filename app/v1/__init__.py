@@ -9,7 +9,7 @@ from app.v1.comment.resources import (
     get_comment_replies,
 )
 from app.v1.comment.schemas import CommentReplySchema, CommentSchema
-from app.v1.list.resources import get_lists
+from app.v1.list.resources import get_list_item, get_lists
 from app.v1.list.schemas import ListSchema
 from app.v1.user.resources import create_user, get_user_list, login, logout
 from app.v1.user.schemas import UserSchema, UserLoginSchema
@@ -65,7 +65,25 @@ version_1_registry.add_handler(
     get_lists,
     rule="/lists",
     method="GET",
-    response_body_schema=ListSchema(),
+    response_body_schema={
+        200: ListSchema(many=True),
+        401: ErrorSchema(),
+        404: ErrorSchema(),
+        500: ErrorSchema(),
+    },
+    tags=["List"],
+)
+
+version_1_registry.add_handler(
+    get_list_item,
+    rule="/lists/<id>",
+    method="GET",
+    response_body_schema={
+        200: ListSchema(),
+        401: ErrorSchema(),
+        404: ErrorSchema(),
+        500: ErrorSchema(),
+    },
     tags=["List"],
 )
 
@@ -74,7 +92,12 @@ version_1_registry.add_handler(
     get_user_list,
     rule="/users",
     method="GET",
-    response_body_schema=UserSchema(many=True),
+    response_body_schema={
+        200: UserSchema(many=True),
+        401: ErrorSchema(),
+        404: ErrorSchema(),
+        500: ErrorSchema(),
+    },
     tags=["User"],
 )
 

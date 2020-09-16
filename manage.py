@@ -1,4 +1,3 @@
-import json
 import random
 import string
 from flask import g, request
@@ -12,7 +11,12 @@ app = RestApp()
 
 @app.login_manager.user_loader
 def load_user(user_id):
-    return UserModel.get(user_id)
+    try:
+        user = UserModel.get(user_id)
+    except UserModel.DoesNotExist:
+        return None
+    else:
+        return user
 
 
 @app.before_request

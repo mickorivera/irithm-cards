@@ -8,7 +8,18 @@ from app.v1.user.models import UserModel
 
 class TestUserLogin:
     def setup_method(self):
-        self._app = RestApp().test_client()
+        app = RestApp()
+
+        @app.login_manager.user_loader
+        def load_user(user_id):
+            try:
+                user = UserModel.get(user_id)
+            except UserModel.DoesNotExist:
+                return None
+            else:
+                return user
+
+        self._app_client = app.test_client()
 
         self.endpoint = "v1/login"
         self.content_type = "application/json"
@@ -49,7 +60,7 @@ class TestUserLogin:
         ],
     )
     def test_login(self, test_input, expected):
-        response = self._app.post(
+        response = self._app_client.post(
             self.endpoint,
             content_type=self.content_type,
             json=test_input,
@@ -61,13 +72,32 @@ class TestUserLogin:
 
 class TestUserIndex:
     def setup_method(self):
-        self._app = RestApp().test_client()
+        app = RestApp()
+        self._app_client = app.test_client()
+
+        @app.login_manager.user_loader
+        def load_user(user_id):
+            try:
+                user = UserModel.get(user_id)
+            except UserModel.DoesNotExist:
+                return None
+            else:
+                return user
 
         self.endpoint = "v1/users"
         self.content_type = "application/json"
 
     def test_get_user_list(self, users):
-        response = self._app.get(
+        self._app_client.post(
+            "v1/login",
+            content_type=self.content_type,
+            json={
+                "username": "user1",
+                "password": "password1",
+            },
+        )
+
+        response = self._app_client.get(
             self.endpoint,
             content_type=self.content_type,
         )
