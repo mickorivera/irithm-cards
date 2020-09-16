@@ -7,6 +7,14 @@ class Config:
     DEBUG = True
     TEST = False
 
+    POSTGRESQL_DB_NAME = os.getenv("POSTGRESQL_DB_NAME")
+    POSTGRESQL_DB_HOST = os.getenv("POSTGRESQL_DB_HOST")
+    POSTGRESQL_DB_PORT = os.getenv("POSTGRESQL_DB_PORT")
+    POSTGRESQL_DB_USERNAME = os.getenv("POSTGRESQL_DB_USERNAME")
+    POSTGRESQL_DB_PASSWORD = os.getenv("POSTGRESQL_DB_PASSWORD")
+
+    API_SECRET_KEY = os.getenv("API_SECRET_KEY")
+
 
 class LocalConfig:
     """Configuration for debugging purposes."""
@@ -58,4 +66,4 @@ def get_config(config_name=None):
         "staging": StagingConfig,
         "production": ProductionConfig,
         "default": LocalConfig,
-    }.get(config_name)
+    }.get(config_name, LocalConfig)

@@ -1,3 +1,4 @@
+import json
 import random
 import string
 from flask import g, request
@@ -21,6 +22,7 @@ def log_request_info():
     )
     g.log_id = log_id
 
+    # TODO: mask password
     app.logger.info(
         f"LOG ID: {g.log_id} HEADERS: {request.headers}\n"
         f"LOG ID: {g.log_id} REQUEST METHOD: {request.method}\n"

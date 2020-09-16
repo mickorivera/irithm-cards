@@ -1,7 +1,11 @@
-from flask import redirect
+import os
+
+from flask import redirect, url_for
 from flask_login import login_required, login_user, logout_user
 from flask_rebar import get_validated_body
+from flask_rebar.errors import NotFound, Unauthorized
 
+from app.utils.hashing import get_hash
 from app.v1.user.models import UserModel
 
 
@@ -17,10 +21,12 @@ def get_user_list():
 def create_user():
     validated_body = get_validated_body()
 
+    salt = os.urandom(32)
     user = UserModel.create(
         username=validated_body.get("username"),
         email_address=validated_body.get("username"),
-        password=validated_body.get("password"),
+        salt=salt,
+        key=get_hash(password=validated_body.get("password"), salt=salt),
     )
 
     return user
@@ -28,8 +34,17 @@ def create_user():
 
 def login():
     validated_body = get_validated_body()
-    # TODO: compare user password
-    user = UserModel.get(username=validated_body.get("username"))
+
+    try:
+        user = UserModel.get(username=validated_body.get("username"))
+    except UserModel.DoesNotExist:
+        raise NotFound
+
+    if user.key.tobytes() != get_hash(
+        password=validated_body.get("password"), salt=user.salt
+    ):
+        raise Unauthorized
+
     login_user(user=user)
 
     return user
@@ -39,4 +54,4 @@ def login():
 def logout():
     logout_user()
 
-    return {}
+    return redirect(next or url_for('index'))
