@@ -32,7 +32,9 @@ def login():
     validated_body = get_validated_body()
 
     try:
-        user = UserModel.get(username=validated_body.get("username"))
+        user = UserModel.get(
+            username=validated_body.get("username"), is_deleted=False
+        )
     except UserModel.DoesNotExist:
         raise NotFound
 

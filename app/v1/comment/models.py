@@ -1,5 +1,6 @@
 from playhouse.postgres_ext import (
     AutoField,
+    BooleanField,
     CharField,
     ForeignKeyField,
     DateTimeField,
@@ -19,6 +20,7 @@ class CommentModel(BaseSQLModel):
     content = CharField(max_length=256)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)
+    is_deleted = BooleanField(default=False)
 
     class Meta(BaseSQLModel):
         table_name = "comments"

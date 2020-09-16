@@ -13,7 +13,7 @@ class TestUserLogin:
         @app.login_manager.user_loader
         def load_user(user_id):
             try:
-                user = UserModel.get(user_id)
+                user = UserModel.get(user_id, is_deleted=False)
             except UserModel.DoesNotExist:
                 return None
             else:
@@ -78,7 +78,7 @@ class TestUserIndex:
         @app.login_manager.user_loader
         def load_user(user_id):
             try:
-                user = UserModel.get(user_id)
+                user = UserModel.get(user_id, is_deleted=False)
             except UserModel.DoesNotExist:
                 return None
             else:

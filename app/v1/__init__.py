@@ -9,7 +9,13 @@ from app.v1.comment.resources import (
     get_comment_replies,
 )
 from app.v1.comment.schemas import CommentReplySchema, CommentSchema
-from app.v1.list.resources import get_list_item, get_lists
+from app.v1.list.resources import (
+    create_list,
+    delete_list_item,
+    get_list_item,
+    get_lists,
+    update_list_item,
+)
 from app.v1.list.schemas import ListSchema
 from app.v1.user.resources import create_user, get_user_list, login, logout
 from app.v1.user.schemas import UserSchema, UserLoginSchema
@@ -75,6 +81,19 @@ version_1_registry.add_handler(
 )
 
 version_1_registry.add_handler(
+    create_list,
+    rule="/lists",
+    method="POST",
+    request_body_schema=ListSchema(),
+    response_body_schema={
+        200: ListSchema(),
+        401: ErrorSchema(),
+        500: ErrorSchema(),
+    },
+    tags=["List"],
+)
+
+version_1_registry.add_handler(
     get_list_item,
     rule="/lists/<id>",
     method="GET",
@@ -84,6 +103,27 @@ version_1_registry.add_handler(
         404: ErrorSchema(),
         500: ErrorSchema(),
     },
+    tags=["List"],
+)
+
+version_1_registry.add_handler(
+    update_list_item,
+    rule="/lists/<id>",
+    method="PATCH",
+    request_body_schema=ListSchema(),
+    response_body_schema={
+        200: ListSchema(),
+        401: ErrorSchema(),
+        404: ErrorSchema(),
+        500: ErrorSchema(),
+    },
+    tags=["List"],
+)
+
+version_1_registry.add_handler(
+    delete_list_item,
+    rule="/lists/<id>",
+    method="DELETE",
     tags=["List"],
 )
 
