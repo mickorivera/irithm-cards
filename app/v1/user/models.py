@@ -17,6 +17,7 @@ class UserModel(BaseSQLModel, UserMixin):
     salt = BlobField()
     key = BlobField()
     role = CharField(default=UserRole.MEMBER)
+    date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)
 
     class Meta(BaseSQLModel):

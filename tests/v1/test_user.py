@@ -1,9 +1,8 @@
-import os
 import pytest
 from http import HTTPStatus
 
 from app import RestApp
-from app.utils.hashing import get_hash
+from app.utils.time import format_date
 from app.v1.user.models import UserModel
 
 
@@ -13,29 +12,6 @@ class TestUserLogin:
 
         self.endpoint = "v1/login"
         self.content_type = "application/json"
-
-    @pytest.fixture(scope="class", autouse=True)
-    def seed_event_tables(self):
-        if UserModel.table_exists():
-            UserModel.drop_table(cascade=True)
-
-        UserModel.create_table()
-
-        salt = os.urandom(32)
-        UserModel.create(
-            username="user1",
-            email_address="user1@gmail.com",
-            key=get_hash(password="password1", salt=salt),
-            salt=salt,
-        )
-        UserModel.create(
-            username="user2",
-            email_address="user2@gmail.com",
-            key=get_hash(password="password2", salt=salt),
-            salt=salt,
-        )
-        yield
-        UserModel.truncate_table(cascade=True)
 
     @pytest.mark.parametrize(
         "test_input, expected",
@@ -83,26 +59,29 @@ class TestUserLogin:
         assert expected["response"] == response.json
 
 
-class TestUserLogout:
+class TestUserIndex:
     def setup_method(self):
         self._app = RestApp().test_client()
 
-        self.endpoint = "v1/logout"
+        self.endpoint = "v1/users"
         self.content_type = "application/json"
 
-    @pytest.fixture(scope="class", autouse=True)
-    def seed_event_tables(self):
-        if UserModel.table_exists():
-            UserModel.drop_table(cascade=True)
-
-        UserModel.create_table()
-
-        salt = os.urandom(32)
-        UserModel.create(
-            username="user1",
-            email_address="user1@gmail.com",
-            key=get_hash(password="password1", salt=salt),
-            salt=salt,
+    def test_get_user_list(self, users):
+        response = self._app.get(
+            self.endpoint,
+            content_type=self.content_type,
         )
-        yield
-        UserModel.truncate_table(cascade=True)
+
+        assert HTTPStatus.OK == response.status_code
+        expected_response = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "email_address": user.email_address,
+                "role": user.role,
+                "date_created": format_date(user.date_created),
+                "date_updated": format_date(user.date_updated),
+            }
+            for user in users
+        ]
+        assert expected_response == response.json

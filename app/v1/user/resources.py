@@ -10,12 +10,7 @@ from app.v1.user.models import UserModel
 
 
 def get_user_list():
-    # TODO: return data from database
-    return {
-        "email": "micko@micko.com",
-        "username": "micko",
-        "password": "qwerty",
-    }
+    return UserModel.select()
 
 
 def create_user():

@@ -74,7 +74,7 @@ version_1_registry.add_handler(
     get_user_list,
     rule="/users",
     method="GET",
-    response_body_schema=UserSchema(),
+    response_body_schema=UserSchema(many=True),
     tags=["User"],
 )
 
