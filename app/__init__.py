@@ -8,8 +8,8 @@ from flask_rebar import Rebar
 from playhouse.postgres_ext import PostgresqlDatabase
 
 from app.utils.callbacks import raise_unauthorized
-from config import get_config
 from app.v1 import version_1_registry
+from config import get_config
 
 
 class RestApp(Flask):
@@ -34,6 +34,8 @@ class RestApp(Flask):
 
         self._init_logger()
         self._init_db_client()
+
+        self.login_manager.user_loader
 
     def _init_logger(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

@@ -9,6 +9,7 @@ from app.utils.hashing import get_hash
 from app.v1.user.models import UserModel
 
 
+@login_required
 def get_user_list():
     return UserModel.select()
 
