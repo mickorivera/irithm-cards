@@ -39,6 +39,9 @@ python seed.py
 ```
 
 ### Unit Tests
+```bash
+ pytest -vv tests --cov-branch --cov=app
+```
 
 ### Run Application
 ```bash
