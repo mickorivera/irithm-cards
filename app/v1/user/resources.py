@@ -54,4 +54,4 @@ def login():
 def logout():
     logout_user()
 
-    return redirect(next or url_for('index'))
+    return redirect(next or url_for("index"))
