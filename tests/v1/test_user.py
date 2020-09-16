@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 from app import RestApp
 from app.utils.time import format_date
+from app.v1.user.models import UserModel
 
 
 class TestUserLogin:
