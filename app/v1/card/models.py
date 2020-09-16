@@ -1,5 +1,6 @@
 from playhouse.postgres_ext import (
     AutoField,
+    BooleanField,
     CharField,
     ForeignKeyField,
     DateTimeField,
@@ -18,6 +19,7 @@ class CardModel(BaseSQLModel):
     description = CharField(max_length=1024)
     date_created = DateTimeField(null=True)
     date_updated = DateTimeField(null=True)
+    is_deleted = BooleanField(default=False)
 
     class Meta(BaseSQLModel):
         table_name = "cards"
