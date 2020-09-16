@@ -13,3 +13,8 @@ class UserSchema(Schema):
     user_role = fields.String(
         default=UserRole.MEMBER, validate=validate.OneOf(UserRole)
     )
+
+
+class UserLoginSchema(Schema):
+    username = fields.String()
+    password = fields.String(load_only=True)

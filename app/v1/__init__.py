@@ -1,6 +1,7 @@
-from flask_rebar import HeaderApiKeyAuthenticator, SwaggerV3Generator
+from flask_rebar import SwaggerV3Generator, Tag
 from flask_rebar.rebar import HandlerRegistry
 
+from app.common.schemas import ErrorSchema
 from app.v1.card.resources import get_card_list
 from app.v1.card.schemas import CardSchema
 from app.v1.comment.resources import (
@@ -11,7 +12,7 @@ from app.v1.comment.schemas import CommentReplySchema, CommentSchema
 from app.v1.list.resources import get_lists
 from app.v1.list.schemas import ListSchema
 from app.v1.user.resources import create_user, get_user_list, login, logout
-from app.v1.user.schemas import UserSchema
+from app.v1.user.schemas import UserSchema, UserLoginSchema
 from config import get_config
 
 
@@ -39,6 +40,7 @@ version_1_registry.add_handler(
     rule="/cards",
     method="GET",
     response_body_schema=CardSchema(),
+    tags=["Card"],
 )
 
 # Comment Endpoints
@@ -47,6 +49,7 @@ version_1_registry.add_handler(
     rule="/comments",
     method="GET",
     response_body_schema=CommentSchema(),
+    tags=["Comment"],
 )
 
 version_1_registry.add_handler(
@@ -54,6 +57,7 @@ version_1_registry.add_handler(
     rule="/comment-replies",
     method="GET",
     response_body_schema=CommentReplySchema(),
+    tags=["Comment"],
 )
 
 # List Endpoints
@@ -62,6 +66,7 @@ version_1_registry.add_handler(
     rule="/lists",
     method="GET",
     response_body_schema=ListSchema(),
+    tags=["List"],
 )
 
 # User Endpoints
@@ -70,6 +75,7 @@ version_1_registry.add_handler(
     rule="/users",
     method="GET",
     response_body_schema=UserSchema(),
+    tags=["User"],
 )
 
 version_1_registry.add_handler(
@@ -78,19 +84,30 @@ version_1_registry.add_handler(
     method="POST",
     request_body_schema=UserSchema(),
     response_body_schema=UserSchema(),
+    tags=["User"],
 )
 
 version_1_registry.add_handler(
     login,
     rule="/login",
     method="POST",
-    request_body_schema=UserSchema(),
-    response_body_schema=UserSchema(),
+    request_body_schema=UserLoginSchema(),
+    response_body_schema={
+        200: UserLoginSchema(),
+        404: ErrorSchema(),
+        500: ErrorSchema(),
+    },
+    tags=["User"],
 )
 
 version_1_registry.add_handler(
     logout,
     rule="/logout",
     method="POST",
-    response_body_schema=UserSchema(),
+    response_body_schema={
+        200: UserSchema(),
+        401: ErrorSchema(),
+        500: ErrorSchema(),
+    },
+    tags=["User"],
 )

@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_rebar import Rebar
 from playhouse.postgres_ext import PostgresqlDatabase
 
+from app.utils.callbacks import raise_unauthorized
 from config import get_config
 from app.v1 import version_1_registry
 
@@ -25,9 +26,11 @@ class RestApp(Flask):
         self.rebar = Rebar()
         self.rebar.add_handler_registry(version_1_registry)
         self.rebar.init_app(app=self)
+
+        self.secret_key = config.API_SECRET_KEY
         self.login_manager = LoginManager()
         self.login_manager.init_app(app=self)
-        self.secret_key = config.API_SECRET_KEY
+        self.login_manager.unauthorized_callback = raise_unauthorized
 
         self._init_logger()
         self._init_db_client()
