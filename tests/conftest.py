@@ -43,7 +43,7 @@ def users():
             email_address="user4@gmail.com",
             key=get_hash(password="password4", salt=salt),
             salt=salt,
-        )
+        ),
     ]
     yield users
 

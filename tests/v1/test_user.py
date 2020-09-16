@@ -80,6 +80,7 @@ class TestUserIndex:
                 "role": user.role,
                 "date_created": format_date(user.date_created),
                 "date_updated": format_date(user.date_updated),
-            } for user in users
+            }
+            for user in users
         ]
         assert expected_response == response.json
